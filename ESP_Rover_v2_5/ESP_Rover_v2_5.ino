@@ -18,15 +18,9 @@
 // ===========================
 
 bool flashState = false;
-//const char *ssid = "mohandass";
-//const char *password = "MDass@2020";
 
-//const char *ssid = "Youtuber KARTIS";
-//const char *password = "Subscribe_paniten";
-
-const char *ssid = "Hello";
-const char *password = "caspercasper1234";
-
+const char *ssid = "Youtuber KARTIS";
+const char *password = "Subscribe_paniten";
 
 void startCameraServer();
 void setupLedFlash();

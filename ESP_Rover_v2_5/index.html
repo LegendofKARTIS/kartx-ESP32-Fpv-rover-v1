@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <style>
+        body {
+            margin: 0;
+            background: #111;
+            font-family: Arial;
+            text-align: center;
+            color: white;
+        }
+
+        img {
+            width: 100%;
+            max-width: 640px;
+            margin-top: 10px;
+            border-radius: 8px;
+        }
+
+        button {
+            width: 90px;
+            height: 60px;
+            font-size: 22px;
+            margin: 5px;
+            border: none;
+            border-radius: 8px;
+            background: #ff9800;
+            font-weight: bold;
+        }
+
+        button:active {
+            background: #ffd54f;
+        }
+    </style>
+</head>
+
+<body>
+
+    <h2>ESP32 FPV Rover</h2>
+
+    <img id="cam">
+
+    <br>
+
+    <button id="forward">▲</button>
+
+    <br>
+
+    <button id="left">◄</button>
+    <button id="stop">■</button>
+    <button id="right">►</button>
+
+    <br>
+
+    <button id="back">▼</button>
+
+    <script>
+        document.getElementById("cam").src =
+            "http://" + location.hostname + ":81/stream";
+
+        function send(cmd) {
+            fetch("/" + cmd).catch(err => console.log(err));
+        }
+        function bind(id, cmd) {
+            const b = document.getElementById(id);
+
+            function start(e) {
+                e.preventDefault();
+                send(cmd);
+            }
+
+            function stop(e) {
+                e.preventDefault();
+                send("stop");
+            }
+
+            b.addEventListener("mousedown", start);
+            b.addEventListener("mouseup", stop);
+            b.addEventListener("mouseleave", stop);
+
+            b.addEventListener("touchstart", start, { passive: false });
+            b.addEventListener("touchend", stop);
+            b.addEventListener("touchcancel", stop);
+        }
+
+        bind("forward", "forward");
+        bind("back", "back");
+        bind("left", "left");
+        bind("right", "right");
+
+        document.getElementById("stop").onclick = () => {
+            send("stop");
+        };
+
+        hold("forward", "forward");
+        hold("back", "back");
+        hold("left", "left");
+        hold("right", "right");
+
+        document.getElementById("stop").onclick = () => {
+            send("stop");
+        };
+
+    </script>
+
+</body>
+
+</html>
